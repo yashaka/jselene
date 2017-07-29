@@ -1,14 +1,12 @@
 package com.seleniumcourses.jselene.locators;
 
-import com.google.common.base.Function;
-import com.seleniumcourses.jselene.ConditionNotMatchedException;
+import java.util.function.Function;
 import com.seleniumcourses.jselene.Locator;
 import com.seleniumcourses.jselene.SeleneCollection;
 import com.seleniumcourses.jselene.SeleneElement;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.seleniumcourses.jselene.conditions.ConditionUtils.checkCondition;
@@ -18,9 +16,9 @@ import static com.seleniumcourses.jselene.conditions.ConditionUtils.checkConditi
  */
 public class FilteredByConditionWebElementsListLocator implements Locator<List<WebElement>> {
     private final SeleneCollection collection;
-    private final Function<SeleneElement, WebElement> condition;
+    private final Function<SeleneElement, SeleneElement> condition;
 
-    public FilteredByConditionWebElementsListLocator(SeleneCollection collection, Function<SeleneElement, WebElement> condition) {
+    public FilteredByConditionWebElementsListLocator(SeleneCollection collection, Function<SeleneElement, SeleneElement> condition) {
         this.collection = collection;
         this.condition = condition;
     }

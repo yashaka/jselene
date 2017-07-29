@@ -1,16 +1,9 @@
 package com.seleniumcourses.jselene.locators;
 
-import com.google.common.base.Function;
-import com.seleniumcourses.jselene.ConditionNotMatchedException;
 import com.seleniumcourses.jselene.Locator;
-import com.seleniumcourses.jselene.SeleneCollection;
 import com.seleniumcourses.jselene.SeleneElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-
-import java.util.Optional;
-
-import static com.seleniumcourses.jselene.conditions.ConditionUtils.checkCondition;
 
 /**
  * Created by yashaka on 3/30/17.

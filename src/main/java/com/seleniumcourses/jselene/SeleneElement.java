@@ -16,13 +16,15 @@ import java.util.function.Consumer;
 public class SeleneElement {
 
     private final Locator<WebElement> locator;
+    private final SeleneWait wait;
 
-    public SeleneElement(By by, WebDriver webdriver) {
-        this(new ByWebElementLocator(webdriver, by));
+    public SeleneElement(By by, WebDriver webdriver, SeleneWait wait) {
+        this(new ByWebElementLocator(webdriver, by), wait);
     }
 
-    public SeleneElement(Locator<WebElement> locator) {
+    public SeleneElement(Locator<WebElement> locator, SeleneWait wait) {
         this.locator = locator;
+        this.wait = wait;
     }
 
     public WebElement getActualWebElement() {
@@ -51,7 +53,7 @@ public class SeleneElement {
             command.accept(this.getActualWebElement());
         } catch (Exception e) {
             command.accept(
-                    Wait.until(this, Be.visible())
+                    wait.until(this, Be.visible()).getActualWebElement()
             );
         }
     }
@@ -66,7 +68,7 @@ public class SeleneElement {
     }
 
     private SeleneElement element(By by) {
-        return new SeleneElement(new InnerByWebElementLocator(this, by));
+        return new SeleneElement(new InnerByWebElementLocator(this, by), wait);
     }
 
     public SeleneElement click() {

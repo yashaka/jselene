@@ -1,6 +1,6 @@
 package com.seleniumcourses.jselene.locators;
 
-import com.google.common.base.Function;
+import java.util.function.Function;
 import com.seleniumcourses.jselene.Locator;
 import com.seleniumcourses.jselene.SeleneCollection;
 import com.seleniumcourses.jselene.SeleneElement;
@@ -16,9 +16,9 @@ import static com.seleniumcourses.jselene.conditions.ConditionUtils.checkConditi
  */
 public class ExcludedByConditionWebElementsListLocator implements Locator<List<WebElement>> {
     private final SeleneCollection collection;
-    private final Function<SeleneElement, WebElement> condition;
+    private final Function<SeleneElement, SeleneElement> condition;
 
-    public ExcludedByConditionWebElementsListLocator(SeleneCollection collection, Function<SeleneElement, WebElement> condition) {
+    public ExcludedByConditionWebElementsListLocator(SeleneCollection collection, Function<SeleneElement, SeleneElement> condition) {
         this.collection = collection;
         this.condition = condition;
     }

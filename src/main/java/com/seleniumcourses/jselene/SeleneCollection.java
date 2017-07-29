@@ -1,6 +1,5 @@
 package com.seleniumcourses.jselene;
 
-import com.google.common.base.Function;
 import com.seleniumcourses.jselene.locators.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -10,27 +9,30 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * Created by yashaka on 3/30/17.
  */
 public class SeleneCollection implements Collection<SeleneElement> {
     private final Locator<List<WebElement>> locator;
+    private final SeleneWait wait;
 
-    public SeleneCollection(By by, WebDriver webdriver) {
-        this(new ByWebElementsListLocator(by, webdriver));
+    public SeleneCollection(By by, WebDriver webdriver, SeleneWait wait) {
+        this(new ByWebElementsListLocator(by, webdriver), wait);
     }
 
-    public SeleneCollection(Locator<List<WebElement>> locator) {
+    public SeleneCollection(Locator<List<WebElement>> locator, SeleneWait wait) {
         this.locator = locator;
+        this.wait = wait;
     }
 
     public List<WebElement> getActualWebElements() {
         return this.locator.find();
     }
 
-    public SeleneCollection should(Function<SeleneCollection, List<WebElement>> condition) {
-        Wait.until(this, condition);
+    public SeleneCollection should(Function<SeleneCollection, SeleneCollection> condition) {
+        wait.until(this, condition);
         return this;
     }
 
@@ -39,17 +41,17 @@ public class SeleneCollection implements Collection<SeleneElement> {
         return this.locator.description();
     }
 
-    public SeleneElement elementBy(Function<SeleneElement, WebElement> condition) {
-        return new SeleneElement(new FoundByConditionCollectionWebElementLocator(this, condition));
+    public SeleneElement elementBy(Function<SeleneElement, SeleneElement> condition) {
+        return new SeleneElement(new FoundByConditionCollectionWebElementLocator(this, condition), wait);
     }
 
-    public SeleneCollection filteredBy(Function<SeleneElement, WebElement> condition) {
-        return new SeleneCollection(new FilteredByConditionWebElementsListLocator(this, condition));
+    public SeleneCollection filteredBy(Function<SeleneElement, SeleneElement> condition) {
+        return new SeleneCollection(new FilteredByConditionWebElementsListLocator(this, condition), wait);
     }
 
-    public SeleneCollection excludedBy(Function<SeleneElement, WebElement> condition) {
+    public SeleneCollection excludedBy(Function<SeleneElement, SeleneElement> condition) {
         // todo: refactor to use "negated condition" not non-DRY ExcludedBlaBlaLocator ...
-        return new SeleneCollection(new ExcludedByConditionWebElementsListLocator(this, condition));
+        return new SeleneCollection(new ExcludedByConditionWebElementsListLocator(this, condition), wait);
     }
 
     @Override
@@ -83,7 +85,7 @@ public class SeleneCollection implements Collection<SeleneElement> {
             @Override
             public SeleneElement next() {
                 SeleneElement indexedElement = new SeleneElement(new CachedWebElementLocator(webElements.get(index),
-                        String.format("(%s)[%s]", originalCollection, index)));
+                        String.format("(%s)[%s]", originalCollection, index)), wait);
                 this.index += 1;
                 return indexedElement;
             }
