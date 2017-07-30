@@ -7,6 +7,7 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -20,18 +21,20 @@ public class Have {
         return new Function<SeleneCollection, SeleneCollection>() {
             @Override
             public SeleneCollection apply(SeleneCollection seleneCollection) {
-                List<WebElement> webelements = seleneCollection.getActualWebElements();
-                List<String> expectedTexts = Arrays.asList(texts);
-                List<String> actualTexts = webelements.stream().map(it -> it.getText()).collect(Collectors.toList());
 
-                if (actualTexts.equals(expectedTexts)) {
-                    return seleneCollection;
-                } else {
-                    throw new ConditionNotMatchedException(String.format(
-                            "\nFailed to assert exact texts for elements: %s\n\texpected: %s\n\t  actual: %s",
-                            seleneCollection, expectedTexts, actualTexts
-                    ));
-                }
+                List<String> actualTexts = Collections.emptyList();
+                List<String> expectedTexts = Arrays.asList(texts);
+                try {
+                    List<WebElement> webelements = seleneCollection.getActualWebElements();
+                    actualTexts = webelements.stream().map(it -> it.getText()).collect(Collectors.toList()); // todo add exceptions-sage method and pass map into it
+                    if (actualTexts.equals(expectedTexts))
+                        return seleneCollection;
+                } catch (WebDriverException e) {/*NOP*/}
+
+                throw new ConditionNotMatchedException(String.format(
+                        "\nFailed to assert exact texts for elements: %s\n\texpected: %s\n\t  actual: %s",
+                        seleneCollection, expectedTexts, actualTexts
+                ));
             }
 
             @Override

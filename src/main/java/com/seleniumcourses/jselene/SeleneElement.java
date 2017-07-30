@@ -5,7 +5,6 @@ import com.seleniumcourses.jselene.locators.ByWebElementLocator;
 import com.seleniumcourses.jselene.locators.InnerByWebElementLocator;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.util.function.Consumer;
@@ -16,15 +15,15 @@ import java.util.function.Consumer;
 public class SeleneElement {
 
     private final Locator<WebElement> locator;
-    private final SeleneWait wait;
+    private final SeleneDriver seleneDriver;
 
-    public SeleneElement(By by, WebDriver webdriver, SeleneWait wait) {
-        this(new ByWebElementLocator(webdriver, by), wait);
+    public SeleneElement(By by, SeleneDriver seleneDriver) {
+        this(new ByWebElementLocator(seleneDriver, by), seleneDriver);
     }
 
-    public SeleneElement(Locator<WebElement> locator, SeleneWait wait) {
+    SeleneElement(Locator<WebElement> locator, SeleneDriver seleneDriver) {
         this.locator = locator;
-        this.wait = wait;
+        this.seleneDriver = seleneDriver;
     }
 
     public WebElement getActualWebElement() {
@@ -53,7 +52,7 @@ public class SeleneElement {
             command.accept(this.getActualWebElement());
         } catch (Exception e) {
             command.accept(
-                    wait.until(this, Be.visible()).getActualWebElement()
+                    seleneDriver.wait.until(this, Be.visible).getActualWebElement()
             );
         }
     }
@@ -68,7 +67,7 @@ public class SeleneElement {
     }
 
     private SeleneElement element(By by) {
-        return new SeleneElement(new InnerByWebElementLocator(this, by), wait);
+        return new SeleneElement(new InnerByWebElementLocator(this, by), seleneDriver);
     }
 
     public SeleneElement click() {

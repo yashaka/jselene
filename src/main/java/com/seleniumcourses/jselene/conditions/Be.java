@@ -11,24 +11,23 @@ import java.util.function.Function;
  */
 public class Be {
 
-    public static Function<SeleneElement, SeleneElement> visible() {
-        return new Function<SeleneElement, SeleneElement>() {
-            @Override
-            public SeleneElement apply(SeleneElement seleneElement) {
-                WebElement webElement = seleneElement.getActualWebElement();
+    public static Function<SeleneElement, SeleneElement> visible = new Function<SeleneElement, SeleneElement>() {
+        @Override
+        public SeleneElement apply(SeleneElement seleneElement) {
+            WebElement webElement = seleneElement.getActualWebElement();
 
-                if (webElement.isDisplayed()) {
-                    return seleneElement;
-                } else {
-                    throw new ElementNotVisibleException(String.format(
-                            "\nElement: {%s} should be visible, but is not:("));
-                }
+            if (webElement.isDisplayed()) {
+                return seleneElement;
+            } else {
+                throw new ElementNotVisibleException(String.format(
+                        "\nElement: {%s} should be visible, but is not:("));
             }
+        }
 
-            @Override
-            public String toString() {
-                return "visible";
-            }
-        };
-    }
+        @Override
+        public String toString() {
+            return "visible";
+        }
+    };
+
 }

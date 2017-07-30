@@ -4,6 +4,7 @@ import com.seleniumcourses.jselene.conditions.Have;
 import org.junit.AfterClass;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 /**
@@ -16,7 +17,7 @@ public class FilteredByConditionCollectionShouldTest {
     public static HTMLBuilder htmlBuilder;
 
     static {
-        webdriver = new FirefoxDriver();
+        webdriver = new ChromeDriver();
         browser = new SeleneDriver(webdriver);
         htmlBuilder =  new HTMLBuilder(browser);
     }
