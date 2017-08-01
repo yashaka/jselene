@@ -1,5 +1,7 @@
 package com.seleniumcourses.jselene;
 
+import com.seleniumcourses.jselene.conditions.CollectionCondition;
+import com.seleniumcourses.jselene.conditions.ElementCondition;
 import com.seleniumcourses.jselene.locators.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -30,8 +32,8 @@ public class SeleneCollection implements Collection<SeleneElement> {
         return this.locator.find();
     }
 
-    public SeleneCollection should(Function<SeleneCollection, SeleneCollection> condition) {
-        seleneDriver.wait.until(this, condition);
+    public SeleneCollection should(CollectionCondition condition) {
+        seleneDriver.wait(this).until(condition);
         return this;
     }
 
@@ -40,15 +42,15 @@ public class SeleneCollection implements Collection<SeleneElement> {
         return this.locator.description();
     }
 
-    public SeleneElement elementBy(Function<SeleneElement, SeleneElement> condition) {
+    public SeleneElement elementBy(ElementCondition condition) {
         return new SeleneElement(new FoundByConditionCollectionWebElementLocator(this, condition), seleneDriver);
     }
 
-    public SeleneCollection filteredBy(Function<SeleneElement, SeleneElement> condition) {
+    public SeleneCollection filteredBy(ElementCondition condition) {
         return new SeleneCollection(new FilteredByConditionWebElementsListLocator(this, condition), seleneDriver);
     }
 
-    public SeleneCollection excludedBy(Function<SeleneElement, SeleneElement> condition) {
+    public SeleneCollection excludedBy(ElementCondition condition) {
         // todo: refactor to use "negated condition" not non-DRY ExcludedBlaBlaLocator ...
         return new SeleneCollection(new ExcludedByConditionWebElementsListLocator(this, condition), seleneDriver);
     }

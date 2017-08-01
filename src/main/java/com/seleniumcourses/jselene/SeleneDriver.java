@@ -6,14 +6,10 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
-import java.util.Optional;
-
 /**
  * Created by yashaka on 3/30/17.
  */
 public class SeleneDriver {
-
-    public final SeleneWait wait;
 
     private final WebDriver webdriver;
     private final Capabilities capabilities;
@@ -28,7 +24,6 @@ public class SeleneDriver {
     public SeleneDriver(WebDriver webdriver, Capabilities capabilities) {
         this.webdriver = webdriver;
         this.capabilities = capabilities;
-        this.wait = new SeleneWait(this, (Long) capabilities.getCapability("timeout"));
     }
 
     public SeleneDriver open(String url) {
@@ -54,6 +49,10 @@ public class SeleneDriver {
 
     public WebDriver webdriver() { return this.webdriver; }
 
+    public <T> Wait<T> wait(T context) {
+        return new Wait<>(context, getCapability("timeout"));
+    }
+
     public void quit() {
         this.webdriver.quit();
     }
@@ -64,5 +63,10 @@ public class SeleneDriver {
 
     private <T> T getCapability(String name) {
         return (T) capabilities.getCapability(name);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("SeleneDriver(%s).\n\t%s", webdriver.getClass().getSimpleName(), capabilities);
     }
 }

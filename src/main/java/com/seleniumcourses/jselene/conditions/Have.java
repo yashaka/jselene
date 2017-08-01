@@ -17,10 +17,10 @@ import java.util.stream.Collectors;
  */
 public class Have {
 
-    public static Function<SeleneCollection, SeleneCollection> exactTexts(String... texts) {
-        return new Function<SeleneCollection, SeleneCollection>() {
+    public static CollectionCondition exactTexts(String... texts) {
+        return new CollectionCondition() {
             @Override
-            public SeleneCollection apply(SeleneCollection seleneCollection) {
+            public List<WebElement> apply(SeleneCollection seleneCollection) {
 
                 List<String> actualTexts = Collections.emptyList();
                 List<String> expectedTexts = Arrays.asList(texts);
@@ -28,7 +28,7 @@ public class Have {
                     List<WebElement> webelements = seleneCollection.getActualWebElements();
                     actualTexts = webelements.stream().map(it -> it.getText()).collect(Collectors.toList()); // todo add exceptions-sage method and pass map into it
                     if (actualTexts.equals(expectedTexts))
-                        return seleneCollection;
+                        return webelements;
                 } catch (WebDriverException e) {/*NOP*/}
 
                 throw new ConditionNotMatchedException(String.format(
@@ -44,17 +44,17 @@ public class Have {
         };
     }
 
-    public static Function<SeleneElement, SeleneElement> exactText(String text) {
-        return new Function<SeleneElement, SeleneElement>() {
+    public static ElementCondition exactText(String text) {
+        return new ElementCondition() {
             @Override
-            public SeleneElement apply(SeleneElement seleneElement) {
+            public WebElement apply(SeleneElement seleneElement) {
                 String actualText = "";
 
                 try {
                     WebElement webElement = seleneElement.getActualWebElement();
                     actualText = webElement.getText();
                     if (actualText.equals(text))
-                        return seleneElement;
+                        return webElement;
                 } catch (WebDriverException e) {/*NOP*/}
 
                 throw new ConditionNotMatchedException(String.format(
@@ -68,17 +68,17 @@ public class Have {
         };
     }
 
-    public static Function<SeleneElement, SeleneElement> cssClass(String expected) {
-        return new Function<SeleneElement, SeleneElement>() {
+    public static ElementCondition cssClass(String expected) {
+        return new ElementCondition() {
             @Override
-            public SeleneElement apply(SeleneElement seleneElement) {
+            public WebElement apply(SeleneElement seleneElement) {
                 String actualClassAttributeValue = "";
 
                 try {
                     WebElement webElement = seleneElement.getActualWebElement();
                     actualClassAttributeValue = webElement.getAttribute("class");
                     if (hasClass(actualClassAttributeValue, expected))
-                        return seleneElement;
+                        return webElement;
                 } catch (WebDriverException e) {/*NOP*/}
 
                 throw new ConditionNotMatchedException(String.format(

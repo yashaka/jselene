@@ -1,13 +1,11 @@
 package com.seleniumcourses.jselene;
 
-import com.seleniumcourses.jselene.conditions.Be;
 import com.seleniumcourses.jselene.locators.ByWebElementLocator;
 import com.seleniumcourses.jselene.locators.InnerByWebElementLocator;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 
-import java.util.function.Consumer;
 
 /**
  * Created by yashaka on 3/30/17.
@@ -31,30 +29,26 @@ public class SeleneElement {
     }
 
     public SeleneElement setValue(String value) {
-        this.execute(it -> {
-            it.clear();
-            it.sendKeys(value);
-        });
+        seleneDriver.wait(this).until(it -> {
+                it.getActualWebElement().clear();
+                it.getActualWebElement().sendKeys(value);
+        }, this + " is not available for clear and sendKeys");
         return this;
     }
 
     public SeleneElement pressEnter() {
-        return this.sendKeys(Keys.ENTER);
-    }
-
-    public SeleneElement sendKeys(final CharSequence...  keys) {
-        this.execute(it -> it.sendKeys(keys) );
+        seleneDriver.wait(this).until(it -> it.getActualWebElement().sendKeys(Keys.ENTER), this + " is not available for press enter");
         return this;
     }
 
-    private void execute(Consumer<WebElement> command) {
-        try {
-            command.accept(this.getActualWebElement());
-        } catch (Exception e) {
-            command.accept(
-                    seleneDriver.wait.until(this, Be.visible).getActualWebElement()
-            );
-        }
+    public SeleneElement sendKeys(final CharSequence...  keys) {
+        seleneDriver.wait(this).until(it -> it.getActualWebElement().sendKeys(keys), this + " is not available for sendKeys");
+        return this;
+    }
+
+    public SeleneElement click() {
+        seleneDriver.wait(this).until(it -> it.getActualWebElement().click(), this + " is not available for click");
+        return this;
     }
 
     @Override
@@ -68,10 +62,5 @@ public class SeleneElement {
 
     private SeleneElement element(By by) {
         return new SeleneElement(new InnerByWebElementLocator(this, by), seleneDriver);
-    }
-
-    public SeleneElement click() {
-        this.execute(it -> it.click());
-        return this;
     }
 }
