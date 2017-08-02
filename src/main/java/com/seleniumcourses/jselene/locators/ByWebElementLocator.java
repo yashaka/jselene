@@ -1,8 +1,8 @@
 package com.seleniumcourses.jselene.locators;
 
 import com.seleniumcourses.jselene.Locator;
+import com.seleniumcourses.jselene.SeleneDriver;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 /**
@@ -10,15 +10,15 @@ import org.openqa.selenium.WebElement;
  */
 public class ByWebElementLocator implements Locator<WebElement> {
     private final By by;
-    private final WebDriver webdriver;
+    private final SeleneDriver seleneDriver;
 
-    public ByWebElementLocator(WebDriver webdriver, By by) {
-        this.webdriver = webdriver;
+    public ByWebElementLocator(SeleneDriver seleneDriver, By by) {
+        this.seleneDriver = seleneDriver;
         this.by = by;
     }
 
     public WebElement find() {
-        return this.webdriver.findElement(by);
+        return this.seleneDriver.webdriver().findElement(by);
     }
 
     public String description() {

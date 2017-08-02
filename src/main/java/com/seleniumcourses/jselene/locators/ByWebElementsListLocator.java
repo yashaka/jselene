@@ -1,6 +1,7 @@
 package com.seleniumcourses.jselene.locators;
 
 import com.seleniumcourses.jselene.Locator;
+import com.seleniumcourses.jselene.SeleneDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -12,16 +13,16 @@ import java.util.List;
  */
 public class ByWebElementsListLocator implements Locator<List<WebElement>> {
     private final By by;
-    private final WebDriver webdriver;
+    private final SeleneDriver seleneDriver;
 
-    public ByWebElementsListLocator(By by, WebDriver webdriver) {
+    public ByWebElementsListLocator(By by, SeleneDriver seleneDriver) {
         this.by = by;
-        this.webdriver = webdriver;
+        this.seleneDriver = seleneDriver;
     }
 
     @Override
     public List<WebElement> find() {
-        return this.webdriver.findElements(by);
+        return this.seleneDriver.webdriver().findElements(by);
     }
 
     @Override

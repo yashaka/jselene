@@ -4,6 +4,7 @@ import com.seleniumcourses.jselene.conditions.Have;
 import org.junit.AfterClass;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 /**
@@ -16,7 +17,7 @@ public class FilteredByConditionCollectionShouldTest {
     public static HTMLBuilder htmlBuilder;
 
     static {
-        webdriver = new FirefoxDriver();
+        webdriver = new ChromeDriver();
         browser = new SeleneDriver(webdriver);
         htmlBuilder =  new HTMLBuilder(browser);
     }
@@ -35,7 +36,7 @@ public class FilteredByConditionCollectionShouldTest {
                 "<li class='enemy'>Joe</li>",
                 "</ul>"
         );
-        htmlBuilder.when.withBodyTimedOut(5000,
+        htmlBuilder.when.withBodyTimedOut(3000,
                 "<ul>Hello to:",
                 "<li class='friend'>Bob</li>",
                 "<li class='enemy'>Dick</li>",

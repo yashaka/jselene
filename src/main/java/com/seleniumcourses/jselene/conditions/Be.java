@@ -1,6 +1,5 @@
 package com.seleniumcourses.jselene.conditions;
 
-import com.google.common.base.Function;
 import com.seleniumcourses.jselene.SeleneElement;
 import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.WebElement;
@@ -10,24 +9,23 @@ import org.openqa.selenium.WebElement;
  */
 public class Be {
 
-    public static Function<SeleneElement, WebElement> visible() {
-        return new Function<SeleneElement, WebElement>() {
-            @Override
-            public WebElement apply(SeleneElement seleneElement) {
-                WebElement webElement = seleneElement.getActualWebElement();
+    public static ElementCondition visible = new ElementCondition() {
+        @Override
+        public WebElement apply(SeleneElement seleneElement) {
+            WebElement webElement = seleneElement.getActualWebElement();
 
-                if (webElement.isDisplayed()) {
-                    return webElement;
-                } else {
-                    throw new ElementNotVisibleException(String.format(
-                            "\nElement: {%s} should be visible, but is not:("));
-                }
+            if (webElement.isDisplayed()) {
+                return webElement;
+            } else {
+                throw new ElementNotVisibleException(String.format(
+                        "\nElement: {%s} should be visible, but is not:("));
             }
+        }
 
-            @Override
-            public String toString() {
-                return "visible";
-            }
-        };
-    }
+        @Override
+        public String toString() {
+            return "visible";
+        }
+    };
+
 }

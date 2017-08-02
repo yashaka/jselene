@@ -1,6 +1,8 @@
 package com.seleniumcourses.jselene.conditions;
 
-import com.google.common.base.Function;
+import com.seleniumcourses.jselene.exceptions.SeleneError;
+
+import java.util.function.Function;
 
 /**
  * Created by yashaka on 3/30/17.
@@ -11,7 +13,7 @@ public class ConditionUtils {
         try {
             condition.apply(entity);
             return true;
-        } catch (Exception e) {
+        } catch (SeleneError e) {
             return false;
         }
     }

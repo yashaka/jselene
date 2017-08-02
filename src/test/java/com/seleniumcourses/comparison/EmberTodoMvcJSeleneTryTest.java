@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import java.util.Arrays;
@@ -38,7 +39,7 @@ public class EmberTodoMvcJSeleneTryTest {
     public static SeleneDriver browser;
 
     static {
-        webdriver = new FirefoxDriver();
+        webdriver = new ChromeDriver();
         browser = new SeleneDriver(webdriver);
     }
 
@@ -49,7 +50,7 @@ public class EmberTodoMvcJSeleneTryTest {
 
     @Test
     public  void complete_task() {
-        browser.open_url("http://todomvc.com/examples/emberjs/");
+        browser.open("http://todomvc.com/examples/emberjs/");
 
         browser.element("#new-todo").setValue("a").pressEnter();
         browser.element("#new-todo").setValue("b").pressEnter();

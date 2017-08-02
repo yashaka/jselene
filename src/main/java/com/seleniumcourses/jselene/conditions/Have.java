@@ -1,13 +1,15 @@
 package com.seleniumcourses.jselene.conditions;
 
-import com.google.common.base.Function;
-import com.seleniumcourses.jselene.ConditionNotMatchedException;
 import com.seleniumcourses.jselene.SeleneCollection;
 import com.seleniumcourses.jselene.SeleneElement;
+import com.seleniumcourses.jselene.exceptions.ConditionNotMatchedException;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -15,22 +17,24 @@ import java.util.stream.Collectors;
  */
 public class Have {
 
-    public static Function<SeleneCollection,List<WebElement>> exactTexts(String... texts){
-        return new Function<SeleneCollection, List<WebElement>>() {
+    public static CollectionCondition exactTexts(String... texts) {
+        return new CollectionCondition() {
             @Override
             public List<WebElement> apply(SeleneCollection seleneCollection) {
-                List<WebElement> webelements = seleneCollection.getActualWebElements();
-                List<String> expectedTexts = Arrays.asList(texts);
-                List<String> actualTexts = webelements.stream().map(it -> it.getText()).collect(Collectors.toList());
 
-                if (actualTexts.equals(expectedTexts)) {
-                    return webelements;
-                } else {
-                    throw new ConditionNotMatchedException(String.format(
-                            "\nFailed to assert exact texts for elements: %s\n\texpected: %s\n\t  actual: %s",
-                            seleneCollection, expectedTexts, actualTexts
-                    ));
-                }
+                List<String> actualTexts = Collections.emptyList();
+                List<String> expectedTexts = Arrays.asList(texts);
+                try {
+                    List<WebElement> webelements = seleneCollection.getActualWebElements();
+                    actualTexts = webelements.stream().map(it -> it.getText()).collect(Collectors.toList()); // todo add exceptions-sage method and pass map into it
+                    if (actualTexts.equals(expectedTexts))
+                        return webelements;
+                } catch (WebDriverException e) {/*NOP*/}
+
+                throw new ConditionNotMatchedException(String.format(
+                        "\nFailed to assert exact texts for elements: %s\n\texpected: %s\n\t  actual: %s",
+                        seleneCollection, expectedTexts, actualTexts
+                ));
             }
 
             @Override
@@ -40,19 +44,21 @@ public class Have {
         };
     }
 
-    public static Function<SeleneElement, WebElement> exactText(String text) {
-        return new Function<SeleneElement, WebElement>() {
+    public static ElementCondition exactText(String text) {
+        return new ElementCondition() {
             @Override
             public WebElement apply(SeleneElement seleneElement) {
-                WebElement webElement = seleneElement.getActualWebElement();
-                String actualText = webElement.getText();
+                String actualText = "";
 
-                if (actualText.equals(text)) {
-                    return webElement;
-                } else {
-                    throw new ConditionNotMatchedException(String.format(
-                            "\nFailed to assert exact text for element: %s\n\texpected: %s\n\t  actual: %s", seleneElement, text, actualText));
-                }
+                try {
+                    WebElement webElement = seleneElement.getActualWebElement();
+                    actualText = webElement.getText();
+                    if (actualText.equals(text))
+                        return webElement;
+                } catch (WebDriverException e) {/*NOP*/}
+
+                throw new ConditionNotMatchedException(String.format(
+                        "\nFailed to assert exact text for element: %s\n\texpected: %s\n\t  actual: %s", seleneElement, text, actualText));
             }
 
             @Override
@@ -62,19 +68,21 @@ public class Have {
         };
     }
 
-    public static Function<SeleneElement, WebElement> cssClass(String expected) {
-        return new Function<SeleneElement, WebElement>() {
+    public static ElementCondition cssClass(String expected) {
+        return new ElementCondition() {
             @Override
             public WebElement apply(SeleneElement seleneElement) {
-                WebElement webElement = seleneElement.getActualWebElement();
-                String actualClassAttributeValue = webElement.getAttribute("class");
+                String actualClassAttributeValue = "";
 
-                if (hasClass(actualClassAttributeValue, expected)) {
-                    return webElement;
-                } else {
-                    throw new ConditionNotMatchedException(String.format(
-                            "\nFailed to assert cssClass for element: %s\n\texpected: %s\n\t  actual: %s", seleneElement, expected, actualClassAttributeValue));
-                }
+                try {
+                    WebElement webElement = seleneElement.getActualWebElement();
+                    actualClassAttributeValue = webElement.getAttribute("class");
+                    if (hasClass(actualClassAttributeValue, expected))
+                        return webElement;
+                } catch (WebDriverException e) {/*NOP*/}
+
+                throw new ConditionNotMatchedException(String.format(
+                        "\nFailed to assert cssClass for element: %s\n\texpected: %s\n\t  actual: %s", seleneElement, expected, actualClassAttributeValue));
             }
 
             @Override
