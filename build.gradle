@@ -1,0 +1,28 @@
+apply plugin: 'java'
+apply plugin: 'maven-publish'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "org.seleniumhq.selenium:selenium-java:3.0.1"
+    testCompile "com.codeborne:selenide:4.3"
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId 'com.seleniumcourses'
+            artifactId 'jselene'
+            version '0.1'
+
+            from components.java
+        }
+    }
+}
+
+task wrapper(type: Wrapper) {
+    jarFile = './gradle-wrapper/gradle-wrapper.jar'
+    scriptFile = './gradle'
+}

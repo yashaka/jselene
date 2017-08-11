@@ -1,11 +1,9 @@
 package com.seleniumcourses.comparison;
 
-import com.codeborne.selenide.CollectionCondition;
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
 import org.junit.After;
-import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -16,20 +14,23 @@ import java.util.Collection;
 import static com.codeborne.selenide.CollectionCondition.exactTexts;
 import static com.codeborne.selenide.Condition.cssClass;
 import static com.codeborne.selenide.Condition.exactText;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$$;
-import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.*;
 
 @RunWith(Parameterized.class)
 public class EmberTodoMvcSelenideTryTest {
     // 42.300
+
+    public EmberTodoMvcSelenideTryTest() {
+    }
 
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[20][0]);
     }
 
-    public EmberTodoMvcSelenideTryTest() {
+    @Before
+    public void before() {
+        Configuration.browser = "chrome";
     }
 
     @After
@@ -38,7 +39,7 @@ public class EmberTodoMvcSelenideTryTest {
     }
 
     @Test
-    public  void complete_task() {
+    public void complete_task() {
 
         open("http://todomvc.com/examples/emberjs/");
 
