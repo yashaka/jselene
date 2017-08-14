@@ -1,0 +1,18 @@
+apply plugin: 'java'
+
+group = 'com.seleniumcourses'
+version = '0.1'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "org.seleniumhq.selenium:selenium-java:3.0.1"
+    testCompile "com.codeborne:selenide:4.3"
+}
+
+task wrapper(type: Wrapper) {
+    jarFile = './gradle-wrapper/gradle-wrapper.jar'
+    scriptFile = './gradle'
+}
