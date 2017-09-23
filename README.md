@@ -10,3 +10,12 @@ It still may be used
 - or probably to develop more simple, KISS and more OOP-like alternative to [Selenide](http://selenide.org)
 
 Cheers!
+
+# todos
+- add "element actions hooks"
+  - what will be with "webelement actions" that we did not covered?
+- detailed error messages (because of sub-waiting)
+  - done
+- DriverSource?
+  - later...
+    - even WebDriver interface is already kind of enough

@@ -1,6 +1,6 @@
 apply plugin: 'java'
 
-group = 'com.seleniumcourses'
+group = 'org.automician'
 version = '0.1'
 
 repositories {
@@ -9,7 +9,7 @@ repositories {
 
 dependencies {
     compile "org.seleniumhq.selenium:selenium-java:3.0.1"
-    testCompile "com.codeborne:selenide:4.3"
+    testCompile "com.codeborne:selenide:4.6"
 }
 
 task wrapper(type: Wrapper) {
